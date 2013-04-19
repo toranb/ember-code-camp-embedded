@@ -1,5 +1,5 @@
 ## Motivation
-- I wanted to learn ember.js and ember-data ... but wanted to see more than console.log('hello world')
+- I wanted to write a simple django app using the django-rest-framework that had an embedded object graph
 
 ## To run this django application
 
@@ -15,12 +15,12 @@
 ## If you are just stopping by to see the ember.js source
 
 - The ember.js application code
-  - https://github.com/toranb/ember-code-camp/blob/master/codecamp/static/script/app/codecamp.js
+  - https://github.com/toranb/ember-code-camp-embedded/blob/master/codecamp/static/script/app/codecamp.js
 
 
 - The ember.js handlebars template
-  - https://github.com/toranb/ember-code-camp/blob/master/codecamp/ember/templates/index.html
+  - https://github.com/toranb/ember-code-camp-embedded/blob/master/codecamp/ember/templates/index.html
 
 
 - The ember-data django rest api adapter
-  - https://github.com/toranb/ember-code-camp/blob/master/codecamp/static/script/vendor/adapter.js
+  - https://github.com/toranb/ember-code-camp-embedded/blob/master/codecamp/static/script/vendor/adapter.js
