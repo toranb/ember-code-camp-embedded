@@ -2,6 +2,8 @@ CodeCamp = Ember.Application.create();
 
 CodeCamp.Session = DS.Model.extend({
   name: DS.attr('string'),
+  room: DS.attr('string'),
+  desc: DS.attr('string'),
   speakers: DS.hasMany('CodeCamp.Speaker'),
   ratings: DS.hasMany('CodeCamp.Rating'),
   tags: DS.hasMany('CodeCamp.Tag')
@@ -22,11 +24,25 @@ CodeCamp.Tag = DS.Model.extend({
   description: DS.attr('string')
 });
 
+CodeCamp.StoreAdapter = DS.DjangoRESTAdapter.extend({
+      namespace: 'codecamp'
+});
+
+CodeCamp.StoreAdapter.map('CodeCamp.Session', {
+  speakers: {
+    embedded: 'always'
+  },
+  ratings: {
+    embedded: 'always'
+  },
+  tags: {
+    embedded: 'always'
+  }
+});
+
 CodeCamp.Store = DS.Store.extend({
   revision: 12,
-  adapter: DS.DjangoRESTAdapter.create({
-      namespace: 'codecamp'
-  })
+  adapter: CodeCamp.StoreAdapter
 });
 
 CodeCamp.SessionView = Ember.View.extend({
