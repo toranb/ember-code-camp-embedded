@@ -6,6 +6,23 @@ DS.DjangoRESTSerializer = DS.JSONSerializer.extend({
         this._super.apply(this, arguments);
     },
 
+    extractSingle: function(store, type, payload) {
+        for (item in payload) {
+            if (payload[item].constructor.name === 'Array') {
+                var singular_type = Ember.String.singularize(item);
+                var ids = payload[item].map(function(related) {
+                    store.push(singular_type, related);
+                    return related.id; //todo find pk (not always id)
+                });
+                if (ids.length > 0 && typeof(payload[item][0]) !== 'number') {
+                    payload[item] = ids;
+                }
+            }
+        }
+
+        return payload;
+    },
+
     extractArray: function(store, primaryType, payload) {
         for (var j = 0; j < payload.length; j++) {
             for (item in payload[j]) {
