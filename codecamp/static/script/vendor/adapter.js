@@ -15,7 +15,9 @@ DS.DjangoRESTSerializer = DS.JSONSerializer.extend({
                         store.push(singular_type, related);
                         return related.id; //todo find pk (not always id)
                     });
-                    payload[j][item] = ids;
+                    if (ids.length > 0 && typeof(payload[j][item][0]) !== 'number') {
+                        payload[j][item] = ids;
+                    }
                 }
             }
         }
