@@ -4,83 +4,40 @@ CodeCamp.Session = DS.Model.extend({
   name: DS.attr('string'),
   room: DS.attr('string'),
   desc: DS.attr('string'),
-  speakers: DS.hasMany('CodeCamp.Speaker'),
-  ratings: DS.hasMany('CodeCamp.Rating'),
-  tags: DS.hasMany('CodeCamp.Tag')
+  speakers: DS.hasMany('speaker'),
+  ratings: DS.hasMany('rating'),
+  tags: DS.hasMany('tag')
 });
 
 CodeCamp.Speaker = DS.Model.extend({
   name: DS.attr('string'),
-  session: DS.belongsTo('CodeCamp.Session')
+  session: DS.belongsTo('session')
 });
 
 CodeCamp.Rating = DS.Model.extend({
   score: DS.attr('number'),
   feedback: DS.attr('string'),
-  session: DS.belongsTo('CodeCamp.Session')
+  session: DS.belongsTo('session')
 });
 
 CodeCamp.Tag = DS.Model.extend({
   description: DS.attr('string')
 });
 
-CodeCamp.StoreAdapter = DS.DjangoRESTAdapter.extend({
-      namespace: 'codecamp'
-});
-
-CodeCamp.StoreAdapter.map('CodeCamp.Session', {
-  speakers: {
-    embedded: 'always'
-  },
-  ratings: {
-    embedded: 'always'
-  },
-  tags: {
-    embedded: 'always'
-  }
-});
-
-CodeCamp.Store = DS.Store.extend({
-  revision: 12,
-  adapter: CodeCamp.StoreAdapter
-});
-
-CodeCamp.SessionView = Ember.View.extend({
-  templateName: 'session',
-  addRating: function(event) {
-    if (this.formIsValid()) {
-      var rating = this.buildRatingFromInputs(event);
-      this.get('controller').addRating(rating);
-      this.resetForm();
-    }
-  },
-  buildRatingFromInputs: function(session) {
-    var score = this.get('score');
-    var feedback = this.get('feedback');
-    return CodeCamp.Rating.createRecord(
-    { score: score,
-      feedback: feedback,
-      session: session
-    });
-  },
-  formIsValid: function() {
-    var score = this.get('score');
-    var feedback = this.get('feedback');
-    if (score === undefined || feedback === undefined || score.trim() === "" || feedback.trim() === "") {
-      return false;
-    }
-    return true;
-  },
-  resetForm: function() {
-    this.set('score', '');
-    this.set('feedback', '');
-  }
-});
-
 CodeCamp.SessionController = Ember.ObjectController.extend({
-  addRating: function(rating) {
-    this.get('store').commit();
-  }
+    actions: {
+      addRating: function(event) {
+        var score = this.get('score');
+        var feedback = this.get('feedback');
+        if (score === undefined || feedback === undefined || score.trim() === "" || feedback.trim() === "") {
+          return;
+        }
+        var rating = { score: score, feedback: feedback, session: event};
+        this.store.createRecord('rating', rating).save();
+        this.set('score', '');
+        this.set('feedback', '');
+      }
+    }
 });
 
 CodeCamp.Router.map(function() {
@@ -91,6 +48,10 @@ CodeCamp.Router.map(function() {
 
 CodeCamp.SessionsRoute = Ember.Route.extend({
   model: function() {
-    return CodeCamp.Session.find();
+    return this.store.find('session');
   }
+});
+
+CodeCamp.ApplicationAdapter = DS.DjangoRESTAdapter.extend({
+    namespace: 'codecamp'
 });

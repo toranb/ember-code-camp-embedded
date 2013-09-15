@@ -34,9 +34,9 @@
     {{rating.feedback}}<br/>
   {{/each}}
   <br />
-  {{view Ember.TextField placeholder="score" valueBinding="view.score"}}
-  {{view Ember.TextField placeholder="feedback" valueBinding="view.feedback"}}
-  <a {{action addRating model target="view" href=true}}>add rating</a>
+  {{input placeholder="score" value=score}}
+  {{input placeholder="feedback" value=feedback}}
+  <button {{action addRating model}}>Add Rating</button>
 </script>
 
 <script type="text/x-handlebars" data-template-name="speaker">
@@ -45,8 +45,8 @@
 
 {% endverbatim %}
 <script src="{{ STATIC_URL }}script/vendor/jquery-1.9.1.js" type="text/javascript"></script>
-<script src="{{ STATIC_URL }}script/vendor/handlebars-1.0.0-rc.4.js" type="text/javascript"></script>
-<script src="{{ STATIC_URL }}script/vendor/ember-1.0.0-rc.5.js" type="text/javascript"></script>
+<script src="{{ STATIC_URL }}script/vendor/handlebars-1.0.0.js" type="text/javascript"></script>
+<script src="{{ STATIC_URL }}script/vendor/ember-1.0.0.js" type="text/javascript"></script>
 <script src="{{ STATIC_URL }}script/vendor/ember-data.js" type="text/javascript"></script>
 <script src="{{ STATIC_URL }}script/vendor/adapter.js" type="text/javascript"></script>
 <script src="{{ STATIC_URL }}script/app/codecamp.js" type="text/javascript"></script>
